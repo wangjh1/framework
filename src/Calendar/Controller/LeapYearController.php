@@ -13,8 +13,14 @@ use Calendar\Model\LeapYear;
 
 class LeapYearController
 {
-    public function indexAction()
+    public function indexAction(Request $request, $year)
     {
+        $leapyear = new LeapYear();
+        if ($leapyear->isLeapyear($year)) {
+            return new Response('Yep, this is a leap year!');
+        }
+
+        return new Response('Nope, this is not a leap year.');
 
     }
 }
