@@ -1,6 +1,17 @@
 {
+
     "require": {
         "symfony/http-foundation": "^3.2",
-        "symfony/routing": "^3.2"
+        "symfony/routing": "^3.2",
+        "symfony/http-kernel": "^3.2"
+    },
+    "repositories": {
+      "packagist": {
+        "type": "composer",
+        "url": "https://packagist.phpcomposer.com"
+      }
+    },
+    "autoload": {
+      "psr-4": { "": "src/" }
     }
 }
