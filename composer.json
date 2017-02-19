@@ -3,7 +3,8 @@
     "require": {
         "symfony/http-foundation": "^3.2",
         "symfony/routing": "^3.2",
-        "symfony/http-kernel": "^3.2"
+        "symfony/http-kernel": "^3.2",
+        "symfony/event-dispatcher": "^3.2"
     },
     "repositories": {
       "packagist": {
