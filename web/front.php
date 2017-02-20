@@ -12,6 +12,7 @@ ini_set('date.timezone','Asia/Shanghai');
 
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing;
 use Symfony\Component\HttpKernel;
@@ -26,7 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
     return new Response(ob_get_clean());
 }*/
 
-$dispatcher = new EventDispatcher();
+
 /*$dispatcher->addListener('response', function(Simplex\ResponseEvent $event){
     $response = $event->getResponse();
 
@@ -39,17 +40,19 @@ $dispatcher = new EventDispatcher();
 
     $response->setContent($response->getContent().'GA CODE');
 });*/
-$dispatcher->addListener('response', function (Simplex\ResponseEvent $event) {
+/*$dispatcher = new EventDispatcher();
+ * $dispatcher->addListener('response', function (Simplex\ResponseEvent $event) {
     $response = $event->getResponse();
     $headers = $response->headers;
 
     if (!$headers->has('Content-Length') && !$headers->has('Transfer-Encoding')) {
         $headers->set('Content-Length', strlen($response->getContent()));
     }
-});
+});*/
 
 
 $request = Request::createFromGlobals();
+$resquestStack = new RequestStack();
 $routes = include __DIR__.'/../src/app.php';
 
 $context = new Routing\RequestContext();
@@ -58,12 +61,20 @@ $matcher = new Routing\Matcher\UrlMatcher($routes, $context);
 $controllerResolver = new HttpKernel\Controller\ControllerResolver();
 $argumentResolver = new HttpKernel\Controller\ArgumentResolver();
 
+$dispatcher = new EventDispatcher();
+$errorHandler = function (Symfony\Component\Debug\Exception\FlattenException $exception) {
+    $msg = 'Something went wrong! ('.$exception->getMessage().')';
+
+    return new Response($msg, $exception->getStatusCode());
+};
+$dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($matcher, $resquestStack));
+
 $framework = new Simplex\Framework($dispatcher, $matcher, $controllerResolver, $argumentResolver);
-$framework = new HttpKernel\HttpCache\HttpCache(
+/*$framework = new HttpKernel\HttpCache\HttpCache(
     $framework,
     new HttpKernel\HttpCache\Store(__DIR__.'/../cache'),
     new HttpKernel\HttpCache\Esi(),
     array('debug' => true)
-);
+);*/
 
 $framework->handle($request)->send();
