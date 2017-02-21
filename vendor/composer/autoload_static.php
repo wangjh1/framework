@@ -18,6 +18,7 @@ class ComposerStaticInitbbca3f0c64436e0fe3c8332e46cf4842
             'Symfony\\Component\\HttpKernel\\' => 29,
             'Symfony\\Component\\HttpFoundation\\' => 33,
             'Symfony\\Component\\EventDispatcher\\' => 34,
+            'Symfony\\Component\\DependencyInjection\\' => 38,
             'Symfony\\Component\\Debug\\' => 24,
         ),
         'P' => 
@@ -46,6 +47,10 @@ class ComposerStaticInitbbca3f0c64436e0fe3c8332e46cf4842
         'Symfony\\Component\\EventDispatcher\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
+        ),
+        'Symfony\\Component\\DependencyInjection\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/dependency-injection',
         ),
         'Symfony\\Component\\Debug\\' => 
         array (
